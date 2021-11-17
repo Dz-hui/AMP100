@@ -104,7 +104,7 @@ void set_gpio_speed(hal_gpio_t *drv,uint8_t num)
             drv->gpio_setting.gpio_speed = GPIO_SPEED_HIGH;
         break;        
      }
-}
+}  
 
 void set_gpio_pull(hal_gpio_t *drv,uint8_t num)
 {
@@ -145,7 +145,6 @@ void my_gpio_init(hal_gpio_t *drv,uint8_t gpio_clk,uint8_t gpio_mode,uint8_t gpi
     set_gpio_af(drv,gpio_af);
     HAL_GPIO_Init(GPIOx,&(drv->GPIO_Init));
 }
-
 
 void hal_gpio_init(hal_gpio_t *drv)
 {
