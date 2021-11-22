@@ -1,54 +1,102 @@
-/**
-  ******************************************************************************
-  * @file    usart.h
-  * @brief   This file contains all the function prototypes for
-  *          the usart.c file
-  ******************************************************************************
-  * @attention
-  *
-  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
-  * All rights reserved.</center></h2>
-  *
-  * This software component is licensed by ST under Ultimate Liberty license
-  * SLA0044, the "License"; You may not use this file except in compliance with
-  * the License. You may obtain a copy of the License at:
-  *                             www.st.com/SLA0044
-  *
-  ******************************************************************************
-  */
-/* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __USART_H__
 #define __USART_H__
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-/* Includes ------------------------------------------------------------------*/
 #include "main.h"
 
-/* USER CODE BEGIN Includes */
-
-/* USER CODE END Includes */
 
 extern UART_HandleTypeDef huart1;
 extern UART_HandleTypeDef huart3;
 
-/* USER CODE BEGIN Private defines */
+#define _HAL_UART_CLK(uart)    __HAL_RCC_##uart##_CLK_ENABLE()
 
-/* USER CODE END Private defines */
+
+typedef enum{
+
+    HAL_UART_BAUDRATE_9600,
+    HAL_UART_BAUDRATE_115200,
+
+}hal_uart_baudrate_t;
+
+typedef enum{
+
+    AL_UART_DATALEN_8,
+    AL_UART_DATALEN_9,
+
+}hal_uart_datalen_t;
+
+typedef enum{
+  
+   HAL_UART_PARITY_NONE,
+   HAL_UART_PARITY_EVEN,
+   HAL_UART_PARITY_ODD,
+
+}hal_uart_parity_t;
+
+
+typedef enum{
+
+    HAL_UART_STOP_1bit,
+    HAL_UART_STOP_2bit,
+
+}hal_uart_stopbit_t;
+
+
+typedef enum{
+
+    HAL_UART_MODE_TX,
+    HAL_UART_MODE_RX,
+    HAL_UART_MODE_TX_RX,
+
+}hal_uart_mode_t;
+
+typedef enum{
+
+    HAL_UART_HWCONTROL_NONE,
+    HAL_UART_HWCONTROL_CTS,
+    HAL_UART_HWCONTROL_RTS,
+    HAL_UART_HWCONTROL_RTS_CTS,
+
+}hal_uart_hwctrl_t;
+
+typedef enum{
+
+    HAL_UART_OVERSIMPLING_8,
+    HAL_UART_OVERSIMPLING_16,
+
+}hal_uart_oversimpling_t;
+
+
+typedef struct {
+  
+    hal_uart_baudrate_t  uart_baudrate;
+    hal_uart_datalen_t uart_datalen;
+    hal_uart_parity_t uart_parity;
+    hal_uart_stopbit_t uart_stopbit;
+    hal_uart_mode_t uart_mode;
+    hal_uart_oversimpling_t uart_oversimpling;
+    hal_uart_hwctrl_t uart_hwctrl;
+    
+}hal_uart_setting_t;
+
+typedef struct{
+    
+    hal_uart_setting_t setting;
+    UART_HandleTypeDef *huart;
+
+}hal_uart_t;
+
+
+
+
+
 
 void MX_USART1_UART_Init(void);
 void MX_USART3_UART_Init(void);
 
-/* USER CODE BEGIN Prototypes */
 
-/* USER CODE END Prototypes */
 
-#ifdef __cplusplus
-}
-#endif
+
+
 
 #endif /* __USART_H__ */
 
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

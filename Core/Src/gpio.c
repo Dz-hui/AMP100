@@ -62,6 +62,14 @@ void set_gpio_clk(uint8_t num)
     } 
 }
 
+
+void set_gpio_pin()
+{
+    
+}
+
+
+
 void set_gpio_mode(hal_gpio_t *drv,uint8_t num)
 {
     switch(num)

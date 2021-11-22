@@ -2,6 +2,18 @@
     "files.associations": {
         "gpio.h": "c",
         "main.h": "c",
-        "ratio": "c"
+        "ratio": "c",
+        "usart.h": "c",
+        "bitset": "c",
+        "istream": "c",
+        "limits": "c",
+        "memory": "c",
+        "streambuf": "c",
+        "__locale": "c",
+        "atomic": "c",
+        "ios": "c",
+        "locale": "c",
+        "string": "c",
+        "type_traits": "c"
     }
 }
