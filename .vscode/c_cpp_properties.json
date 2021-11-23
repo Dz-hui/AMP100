@@ -11,7 +11,8 @@
                 "UNICODE",
                 "_UNICODE",
                 "USE_HAL_DRIVER",
-                "STM32F429xx"
+                "STM32F429xx",
+                "__CC_ARM"
             ],
             "cStandard": "c99",
             "cppStandard": "c++98",

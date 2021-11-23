@@ -1,126 +1,38 @@
-/* USER CODE BEGIN Header */
-/**
-  ******************************************************************************
-  * @file           : main.c
-  * @brief          : Main program body
-  ******************************************************************************
-  * @attention
-  *
-  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
-  * All rights reserved.</center></h2>
-  *
-  * This software component is licensed by ST under Ultimate Liberty license
-  * SLA0044, the "License"; You may not use this file except in compliance with
-  * the License. You may obtain a copy of the License at:
-  *                             www.st.com/SLA0044
-  *
-  ******************************************************************************
-  */
-/* USER CODE END Header */
-/* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "cmsis_os.h"
-#include "crc.h"
-#include "fatfs.h"
-#include "i2c.h"
-#include "i2s.h"
-#include "spi.h"
-#include "usart.h"
-#include "gpio.h"
 
-/* Private includes ----------------------------------------------------------*/
-/* USER CODE BEGIN Includes */
 
-/* USER CODE END Includes */
 
-/* Private typedef -----------------------------------------------------------*/
-/* USER CODE BEGIN PTD */
-
-/* USER CODE END PTD */
-
-/* Private define ------------------------------------------------------------*/
-/* USER CODE BEGIN PD */
-/* USER CODE END PD */
-
-/* Private macro -------------------------------------------------------------*/
-/* USER CODE BEGIN PM */
-
-/* USER CODE END PM */
-
-/* Private variables ---------------------------------------------------------*/
-
-/* USER CODE BEGIN PV */
-
-/* USER CODE END PV */
-
-/* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 void MX_FREERTOS_Init(void);
-/* USER CODE BEGIN PFP */
 
-/* USER CODE END PFP */
+    hal_gpio_t gpio;
+    hal_uart_t uart;
 
-/* Private user code ---------------------------------------------------------*/
-/* USER CODE BEGIN 0 */
-
-/* USER CODE END 0 */
-
-/**
-  * @brief  The application entry point.
-  * @retval int
-  */
 int main(void)
 {
-  /* USER CODE BEGIN 1 */
 
-  /* USER CODE END 1 */
 
-  /* MCU Configuration--------------------------------------------------------*/
+    HAL_Init();
+    SystemClock_Config();
 
-  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-  HAL_Init();
+    my_gpio_init(&gpio,11,HAL_GPIOH,HAL_GPIO_MODE_OUTPUT_PP,HAL_GPIO_SPEED_MEDIUM,HAL_GPIO_NOPULL,HAL_GPIO_AF_NULL,GPIOH);
+    my_gpio_init(&gpio,10,HAL_GPIOH,HAL_GPIO_MODE_OUTPUT_PP,HAL_GPIO_SPEED_MEDIUM,HAL_GPIO_NOPULL,HAL_GPIO_AF_NULL,GPIOH);
+    my_gpio_init(&gpio,12,HAL_GPIOH,HAL_GPIO_MODE_OUTPUT_PP,HAL_GPIO_SPEED_MEDIUM,HAL_GPIO_NOPULL,HAL_GPIO_AF_NULL,GPIOH);
+    my_gpio_init(&gpio,9,HAL_GPIOA,HAL_GPIO_MODE_AF_PP,HAL_GPIO_SPEED_MEDIUM,HAL_GPIO_NOPULL,HAL_GPIO_AF7_USART1,GPIOA);
+    my_gpio_init(&gpio,10,HAL_GPIOA,HAL_GPIO_MODE_AF_PP,HAL_GPIO_SPEED_MEDIUM,HAL_GPIO_NOPULL,HAL_GPIO_AF7_USART1,GPIOA);
 
-  /* USER CODE BEGIN Init */
+    __HAL_RCC_USART1_CLK_ENABLE();
 
-  /* USER CODE END Init */
+    my_uart_setting(&uart,HAL_UART_BAUDRATE_115200,HAL_UART_DATALEN_8,HAL_UART_PARITY_NONE,HAL_UART_STOP_1bit,HAL_UART_MODE_TX_RX,HAL_UART_HWCONTROL_NONE,HAL_UART_OVERSIMPLING_16);
+    
+    printf("\nhello\n");
 
-  /* Configure the system clock */
-  SystemClock_Config();
 
-  /* USER CODE BEGIN SysInit */
+    while (1){
 
-  /* USER CODE END SysInit */
+        HAL_GPIO_WritePin(GPIOH, GPIO_PIN_10, GPIO_PIN_SET);
+    }
 
-  /* Initialize all configured peripherals */
-  MX_GPIO_Init();
-  MX_CRC_Init();
-  MX_I2C1_Init();
-  MX_I2C2_Init();
-  MX_I2S3_Init();
-  MX_SPI1_Init();
-  MX_SPI2_Init();
-  MX_USART1_UART_Init();
-  MX_USART3_UART_Init();
-  MX_FATFS_Init();
-  /* USER CODE BEGIN 2 */
-
-  /* USER CODE END 2 */
-
-  /* Call init function for freertos objects (in freertos.c) */
-  MX_FREERTOS_Init();
-  /* Start scheduler */
-  osKernelStart();
-
-  /* We should never get here as control is now taken by the scheduler */
-  /* Infinite loop */
-  /* USER CODE BEGIN WHILE */
-  while (1)
-  {
-    /* USER CODE END WHILE */
-
-    /* USER CODE BEGIN 3 */
-  }
-  /* USER CODE END 3 */
 }
 
 /**

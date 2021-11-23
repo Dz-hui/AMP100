@@ -4,6 +4,8 @@
 
 #include "main.h"
 
+#define HAL_GPIO_PIN(num)          GPIO_PIN_##num
+
 typedef GPIO_TypeDef gpio_def;
 
 typedef enum{
@@ -54,6 +56,7 @@ typedef enum{
 
 }hal_gpio_port_t;
 
+
 typedef enum{
   
     HAL_GPIO_MODE_INPUT,
@@ -63,6 +66,8 @@ typedef enum{
     HAL_GPIO_MODE_IT_FALLING,
     HAL_GPIO_MODE_IT_RISING,
     HAL_GPIO_MODE_IT_RISING_FALLING,
+    HAL_GPIO_MODE_AF_OD,
+    HAL_GPIO_MODE_AF_PP,
 
 }hal_gpio_mode_t;
 
@@ -145,7 +150,7 @@ typedef struct {
 typedef struct
 {
     hal_gpio_setting_t gpio_setting;
-    GPIO_InitTypeDef *GPIO_Init;
+    GPIO_InitTypeDef GPIO_Init;
 
     void (*my_gpio_init)(gpio_def *);
 
@@ -157,10 +162,9 @@ void set_gpio_mode(hal_gpio_t *drv,uint8_t num);
 void set_gpio_speed(hal_gpio_t *drv,uint8_t num);
 void set_gpio_pull(hal_gpio_t *drv,uint8_t num);
 void set_gpio_af(hal_gpio_t *drv,uint8_t num);
-void my_gpio_init(hal_gpio_t *drv,uint8_t gpio_clk,uint8_t gpio_mode,uint8_t gpio_speed,uint8_t goio_pull, uint8_t gpio_af,GPIO_TypeDef  *GPIOx);
-
+void my_gpio_init(hal_gpio_t *drv,uint8_t gpio_pin,uint8_t gpio_clk,uint8_t gpio_mode,uint8_t gpio_speed,uint8_t goio_pull, uint8_t gpio_af,GPIO_TypeDef  *GPIOx);
 void hal_gpio_init(hal_gpio_t *drv);
-
+void hal_led_gpio_init(void) ;
 
 #endif /*__ GPIO_H__ */
 

@@ -19,8 +19,8 @@ typedef enum{
 
 typedef enum{
 
-    AL_UART_DATALEN_8,
-    AL_UART_DATALEN_9,
+    HAL_UART_DATALEN_8,
+    HAL_UART_DATALEN_9,
 
 }hal_uart_datalen_t;
 
@@ -86,12 +86,18 @@ typedef struct{
 }hal_uart_t;
 
 
+void set_uart_baudrate(hal_uart_t *drv,hal_uart_baudrate_t baudrate);
+void set_uart_datalen(hal_uart_t *drv,hal_uart_datalen_t datalen);
+void set_uart_parity(hal_uart_t *drv,hal_uart_parity_t parity);
+void set_uart_stopbit(hal_uart_t *drv,hal_uart_stopbit_t stopbit);
+void set_uart_mode(hal_uart_t *drv,hal_uart_mode_t mode);
+void set_uart_hwctrl(hal_uart_t *drv,hal_uart_hwctrl_t hwctrl);
+void set_uart_oversimpling(hal_uart_t *drv,hal_uart_oversimpling_t oversimpling);
+void my_uart_setting(hal_uart_t *drv,hal_uart_baudrate_t baudrate,hal_uart_datalen_t datalen,hal_uart_parity_t parity,hal_uart_stopbit_t stopbit,\
+                     hal_uart_mode_t mode,hal_uart_hwctrl_t hw_hwctrl,hal_uart_oversimpling_t oversimpling);
 
 
-
-
-void MX_USART1_UART_Init(void);
-void MX_USART3_UART_Init(void);
+void nvic_config(uint32_t nvic_prioritygroup,IRQn_Type IRQn, uint32_t PreemptPriority, uint32_t SubPriority);
 
 
 
