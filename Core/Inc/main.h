@@ -32,6 +32,7 @@ extern "C" {
 #include "gpio.h"
 #include "usart.h"
 #include "stdio.h"
+#include "tim.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -41,6 +42,28 @@ extern "C" {
 /* USER CODE BEGIN ET */
 
 /* USER CODE END ET */
+typedef enum{
+
+    mottor_stop,
+    mottor_on,
+    mottor_off,
+    mottor_speed_up,
+    mottor_hold_on,
+    mottor_speed_down,
+
+    
+}hal_mottor_t;
+
+typedef enum{
+    
+    key_state_1=1,
+    key_state_2=2,
+    key_state_3=3,
+    key_state_4=4,
+
+}hal_key_state_t;
+
+
 
 /* Exported constants --------------------------------------------------------*/
 /* USER CODE BEGIN EC */

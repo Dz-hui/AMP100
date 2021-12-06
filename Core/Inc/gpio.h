@@ -5,6 +5,8 @@
 #include "main.h"
 
 #define HAL_GPIO_PIN(num)          GPIO_PIN_##num
+#define KEY1_ON     1
+#define KEY2_ON     2
 
 typedef GPIO_TypeDef gpio_def;
 
@@ -165,6 +167,10 @@ void set_gpio_af(hal_gpio_t *drv,uint8_t num);
 void my_gpio_init(hal_gpio_t *drv,uint8_t gpio_pin,uint8_t gpio_clk,uint8_t gpio_mode,uint8_t gpio_speed,uint8_t goio_pull, uint8_t gpio_af,GPIO_TypeDef  *GPIOx);
 void hal_gpio_init(hal_gpio_t *drv);
 void hal_led_gpio_init(void) ;
+void hal_led_on(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin);
+void hal_led_off(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin);
+void hal_led_toggle(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin);
+uint8_t key_scanf();
 
 #endif /*__ GPIO_H__ */
 

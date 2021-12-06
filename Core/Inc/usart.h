@@ -99,7 +99,7 @@ void my_uart_setting(hal_uart_t *drv,hal_uart_baudrate_t baudrate,hal_uart_datal
 
 void nvic_config(uint32_t nvic_prioritygroup,IRQn_Type IRQn, uint32_t PreemptPriority, uint32_t SubPriority);
 
-
+void MX_USART1_UART_Init(void);
 
 
 

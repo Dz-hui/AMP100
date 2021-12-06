@@ -5,32 +5,91 @@
 void SystemClock_Config(void);
 void MX_FREERTOS_Init(void);
 
-    hal_gpio_t gpio;
-    hal_uart_t uart;
+extern uint8_t mottor_state ;
+hal_gpio_t gpio;
+extern TIM_HandleTypeDef htim1;
+
 
 int main(void)
 {
-
-
+    static uint8_t key_state = 0;
+    static uint8_t key_runing = 0;
+    
+    uint32_t reload = 0;
     HAL_Init();
     SystemClock_Config();
-
+    /*KEY INIT*/
+    my_gpio_init(&gpio,0,HAL_GPIOA,HAL_GPIO_MODE_INPUT,HAL_GPIO_SPEED_MEDIUM,HAL_GPIO_NOPULL,HAL_GPIO_AF_NULL,GPIOA);
+    my_gpio_init(&gpio,13,HAL_GPIOC,HAL_GPIO_MODE_INPUT,HAL_GPIO_SPEED_MEDIUM,HAL_GPIO_NOPULL,HAL_GPIO_AF_NULL,GPIOC);
+    /*LED INIT*/
     my_gpio_init(&gpio,11,HAL_GPIOH,HAL_GPIO_MODE_OUTPUT_PP,HAL_GPIO_SPEED_MEDIUM,HAL_GPIO_NOPULL,HAL_GPIO_AF_NULL,GPIOH);
-    my_gpio_init(&gpio,10,HAL_GPIOH,HAL_GPIO_MODE_OUTPUT_PP,HAL_GPIO_SPEED_MEDIUM,HAL_GPIO_NOPULL,HAL_GPIO_AF_NULL,GPIOH);
-    my_gpio_init(&gpio,12,HAL_GPIOH,HAL_GPIO_MODE_OUTPUT_PP,HAL_GPIO_SPEED_MEDIUM,HAL_GPIO_NOPULL,HAL_GPIO_AF_NULL,GPIOH);
+    HAL_GPIO_WritePin(GPIOH,GPIO_PIN_11,SET);
+    /*USART INIT*/
     my_gpio_init(&gpio,9,HAL_GPIOA,HAL_GPIO_MODE_AF_PP,HAL_GPIO_SPEED_MEDIUM,HAL_GPIO_NOPULL,HAL_GPIO_AF7_USART1,GPIOA);
     my_gpio_init(&gpio,10,HAL_GPIOA,HAL_GPIO_MODE_AF_PP,HAL_GPIO_SPEED_MEDIUM,HAL_GPIO_NOPULL,HAL_GPIO_AF7_USART1,GPIOA);
-
-    __HAL_RCC_USART1_CLK_ENABLE();
-
-    my_uart_setting(&uart,HAL_UART_BAUDRATE_115200,HAL_UART_DATALEN_8,HAL_UART_PARITY_NONE,HAL_UART_STOP_1bit,HAL_UART_MODE_TX_RX,HAL_UART_HWCONTROL_NONE,HAL_UART_OVERSIMPLING_16);
+    MX_USART1_UART_Init();
+    /*TIM INIT*/
+    hal_base_tim_setting();
+    printf("初始化完成\n");
     
-    printf("\nhello\n");
-
-
     while (1){
+        
+        key_state = key_scanf();
+        reload = hal_tim_read_reload(&htim1);
+		    printf("\nreload = %d\n",reload);
 
-        HAL_GPIO_WritePin(GPIOH, GPIO_PIN_10, GPIO_PIN_SET);
+        
+        if(key_state == KEY1_ON)
+        {
+            if(key_runing ==4)
+            {
+              key_runing = 0;
+            }
+            key_runing++ ;
+
+            switch(key_runing){
+              case key_state_1: 
+                hal_led_on(GPIOH,GPIO_PIN_11);
+                mottor_state = mottor_on;
+                if(reload >= 20000)
+                {
+                    mottor_state = mottor_hold_on;
+                    hal_tim_set_reload(&htim1,20000);
+                }
+                break;
+              case key_state_4: 
+                mottor_state = mottor_off;
+                if(reload <= 1)
+                {
+                    mottor_state = mottor_stop;
+                    hal_tim_set_reload(&htim1,0);
+                }
+                break;
+              case key_state_2: 
+                hal_led_toggle(GPIOH,GPIO_PIN_11);
+                mottor_state = mottor_speed_up;
+                if(reload >= 21000)
+                {
+                    mottor_state = mottor_hold_on;
+                    hal_tim_set_reload(&htim1,21000);
+                }
+                break;
+              case key_state_3: 
+                mottor_state = mottor_speed_down;
+                if(reload <= 19000)
+                {
+                    mottor_state = mottor_hold_on;
+                    hal_tim_set_reload(&htim1,19000);
+                }
+                break;
+              default:
+                break;        
+            }
+
+          
+        }
+                  
+        
     }
 
 }

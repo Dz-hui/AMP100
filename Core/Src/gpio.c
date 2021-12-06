@@ -216,6 +216,23 @@ void my_gpio_init(hal_gpio_t *drv,uint8_t gpio_pin,uint8_t gpio_clk,uint8_t gpio
 
 
 
+void hal_led_on(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin){
+
+    HAL_GPIO_WritePin(GPIOx,GPIO_Pin,RESET);
+
+}
+
+void hal_led_off(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin){
+
+    HAL_GPIO_WritePin(GPIOx,GPIO_Pin,SET);
+
+}
+
+void hal_led_toggle(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin){
+
+    HAL_GPIO_TogglePin(GPIOx,GPIO_Pin);
+
+}
     
 void hal_led_gpio_init(void) {
 	
@@ -229,3 +246,31 @@ void hal_led_gpio_init(void) {
     HAL_GPIO_Init(GPIOH, &GPIO_Init);
 
 }
+
+uint8_t key_scanf()
+{
+	static uint8_t key_flag = 0;
+    if(HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_0) == 1 && key_flag == 0)
+	{
+		key_flag = 1;
+		return 1;
+	}
+
+	else if(HAL_GPIO_ReadPin(GPIOC,GPIO_PIN_13) == 1 && key_flag == 0)
+	{
+		key_flag = 1;
+		return 2;
+	}
+
+	else if(HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_0) == 0 && HAL_GPIO_ReadPin(GPIOC,GPIO_PIN_13) == 0)
+	{
+        key_flag = 0;
+		
+	}
+	return 0; 
+}
+
+
+
+
+
